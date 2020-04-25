@@ -16,7 +16,9 @@ class TimelapseCamera:
         print("Taking photo")
         self.camera.start_preview()
         time.sleep(TimelapseCamera.cameraWarmUpTime)
-        filename = TimelapseCamera.directory+"/"+str(int(time.time()))+".jpg"
+        unix = time.time()
+        timestamp = dt.datetime.fromtimestamp(unix).strftime('%d-%m-%Y %H:%M:%S')
+        filename = TimelapseCamera.directory+"/"+timestamp+".jpg"
         self.camera.capture(filename)
         self.camera.stop_preview()
         print("Finished taking photo with name: " + filename)
