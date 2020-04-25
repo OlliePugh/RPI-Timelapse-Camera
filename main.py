@@ -27,7 +27,7 @@ def main():
     tlCamera = TimelapseCamera(60)  #make static list of all threads that can be closed
     while True:
         tlCamera.take_photo()
-        time.sleep(tlCamera.interval-TimelapseCamera.cameraWarmUpTime)
+        time.sleep((tlCamera.interval*60)-TimelapseCamera.cameraWarmUpTime)
 
 if __name__ == "__main__":
     main()
