@@ -2,6 +2,8 @@ import sys
 from picamera import PiCamera
 import time
 import datetime as dt
+import db_uploader
+import threading
 
 class TimelapseCamera:
     directory = "not-in-db"
@@ -27,6 +29,7 @@ def main():
     tlCamera = TimelapseCamera(60)  #make static list of all threads that can be closed
     while True:
         tlCamera.take_photo()
+        threading.Thread(target=db_uploader.send_images_to_db).start()
         time.sleep((tlCamera.interval*60)-TimelapseCamera.cameraWarmUpTime)
 
 if __name__ == "__main__":
