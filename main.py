@@ -1,12 +1,18 @@
+#!/usr/bin/env python2
+
 import sys
 from picamera import PiCamera
+import os
 import time
 import datetime as dt
 import db_uploader
 import threading
 
+images_folder = "not-in-db"
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+path = os.path.join(THIS_FOLDER, images_folder)
+
 class TimelapseCamera:
-    directory = "not-in-db"
     cameraWarmUpTime = 2
 
     def __init__(self):
@@ -19,7 +25,7 @@ class TimelapseCamera:
         time.sleep(TimelapseCamera.cameraWarmUpTime)
         unix = time.time()
         timestamp = dt.datetime.fromtimestamp(unix).strftime('%d-%m-%Y %H:%M:%S')
-        filename = TimelapseCamera.directory+"/"+timestamp+".jpg"
+        filename = os.path.join(path, timestamp+".jpg")
         self.camera.capture(filename)
         self.camera.stop_preview()
         print("Finished taking photo with name: " + filename)
