@@ -9,8 +9,7 @@ class TimelapseCamera:
     directory = "not-in-db"
     cameraWarmUpTime = 2
 
-    def __init__(self, interval):
-        self.interval=interval # how many minutes between each photo
+    def __init__(self):
         self.camera = PiCamera()
         self.camera.resolution = (1024, 768)
 
@@ -26,11 +25,9 @@ class TimelapseCamera:
         print("Finished taking photo with name: " + filename)
 
 def main():
-    tlCamera = TimelapseCamera(60)  #make static list of all threads that can be closed
-    while True:
-        tlCamera.take_photo()
-        threading.Thread(target=db_uploader.send_images_to_db).start()
-        time.sleep((tlCamera.interval*60)-TimelapseCamera.cameraWarmUpTime)
+    tlCamera = TimelapseCamera()  #make static list of all threads that can be closed
+    tlCamera.take_photo()
+    db_uploader.send_images_to_db()
 
 if __name__ == "__main__":
     main()
